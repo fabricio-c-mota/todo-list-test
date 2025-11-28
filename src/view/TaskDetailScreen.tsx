@@ -12,7 +12,7 @@ import {
     View,
 } from 'react-native';
 
-import { localTarkService } from '../model/service/TaskService';
+import { localTaskService } from '../model/service/TaskService';
 import { useTaskDetail } from '../viewmodel/useTaskDetail';
 import { useAppTheme } from './theme/ThemeContext';
 import { AppTheme } from './theme/themes';
@@ -23,7 +23,7 @@ export type TaskDetailScreenProps = NativeStackScreenProps<RootStackParamList, '
 export default function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   const { taskId } = route.params;
   const { task, loading, error, updateTask, deleteTask, loadTask } = useTaskDetail(
-    localTarkService,
+    localTaskService,
     taskId
   );
   const [busy, setBusy] = useState(false);
