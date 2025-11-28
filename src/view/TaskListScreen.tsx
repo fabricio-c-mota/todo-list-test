@@ -17,7 +17,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Task } from '../model/entities/task';
-import { localTarkService } from '../model/service/TaskService';
+import { localTaskService } from '../model/service/TaskService';
 import { useTasks } from '../viewmodel/useTasks';
 import { useAppTheme } from './theme/ThemeContext';
 import { AppTheme } from './theme/themes';
@@ -27,7 +27,7 @@ export type TaskListScreenProps = NativeStackScreenProps<RootStackParamList, 'Ta
 
 export default function TaskListScreen({ navigation }: TaskListScreenProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const { tasks, loading, error, refresh, deleteTask } = useTasks(localTarkService);
+  const { tasks, loading, error, refresh, deleteTask } = useTasks(localTaskService);
   const insets = useSafeAreaInsets();
   const { theme, toggleTheme } = useAppTheme();
   const styles = useMemo(() => createStyles(theme, insets.top), [theme, insets.top]);
