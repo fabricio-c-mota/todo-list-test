@@ -1,50 +1,223 @@
-# Welcome to your Expo app 👋
+# Todo List - React Native com Expo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 👥 Integrantes do Grupo
 
-## Get started
+| Nome Completo | Matrícula |
+|---------------|-----------|
+| Matusalen Costa Alves | 2024116TADS0005 |
+| Fabricio de Carvalho Mota | 2024116TADS0002 |
+| Cícero Andrade Santos | 2024116TADS0040 |
+| Cairon Ferreira Prado | 2024116TADS0045 |
 
-1. Install dependencies
+**Disciplina:** Engenharia de Software 3  
+**Professor:** Me. Mayllomn Veras
 
+---
+
+## 📋 Descrição do Projeto
+
+Este projeto é uma aplicação de lista de tarefas (Todo List) desenvolvida em **React Native** utilizando **Expo**. A aplicação permite ao usuário:
+
+- Criar novas tarefas com título e descrição
+- Visualizar lista de tarefas pendentes e concluídas
+- Marcar tarefas como concluídas ou pendentes
+- Editar tarefas existentes
+- Excluir tarefas
+- Alternar entre temas claro e escuro
+
+---
+
+## 🏗️ Arquitetura e Padrões Aplicados
+
+### MVVM (Model-View-ViewModel)
+
+O projeto segue o padrão **MVVM** com a seguinte estrutura:
+
+```
+src/
+├── model/
+│   ├── entities/
+│   │   └── task.ts              # Entidade Task (interface)
+│   ├── repository/
+│   │   ├── ITaskRepository.ts   # Interface do repositório
+│   │   └── LocalTaskRepository.ts # Implementação local
+│   └── service/
+│       ├── ITaskService.ts      # Interface do serviço
+│       └── TaskService.ts       # Lógica de negócio
+├── view/
+│   ├── TaskListScreen.tsx       # Tela de listagem
+│   ├── TaskCreateScreen.tsx     # Tela de criação
+│   ├── TaskDetailScreen.tsx     # Tela de detalhes/edição
+│   └── theme/                   # Contexto de tema
+└── viewmodel/
+    ├── useTasks.ts              # ViewModel para listagem
+    ├── useTaskCreate.ts         # ViewModel para criação
+    └── useTaskDetail.ts         # ViewModel para detalhes
+```
+
+- **Model:** Contém as entidades, repositórios e serviços que encapsulam a lógica de dados e regras de negócio.
+- **View:** Componentes React Native responsáveis pela interface do usuário.
+- **ViewModel:** Hooks personalizados que gerenciam o estado e a comunicação entre View e Model.
+
+### Injeção de Dependência (DI)
+
+A injeção de dependência é aplicada através de:
+
+1. **Interfaces:** `ITaskRepository` e `ITaskService` definem contratos que permitem trocar implementações.
+2. **Constructor Injection:** O `TaskService` recebe o repositório via construtor:
+   ```typescript
+   constructor(repository: IRepository) {
+       this.repository = repository;
+   }
+   ```
+3. **ViewModels:** Recebem o serviço como parâmetro, facilitando testes com mocks:
+   ```typescript
+   export function useTasks(taskService: ITaskService) { ... }
+   ```
+
+### Testes Automatizados
+
+Os testes foram implementados utilizando **Jest** e **React Native Testing Library**:
+
+- **Testes de Unidade:** Testam isoladamente Repository, Service e ViewModels
+- **Mocks:** Utilização de mocks para simular dependências
+- **Cobertura:** 100% de cobertura em `TaskService.ts` e `LocalTaskRepository.ts`
+
+```
+tests/
+├── LocalTaskRepository.test.ts  # 28 testes
+├── TaskService.test.ts          # 55 testes
+├── useTasks.test.ts             # Testes do ViewModel
+├── useTaskCreate.test.ts        # Testes do ViewModel
+├── useTaskDetail.test.ts        # Testes do ViewModel
+└── utils/
+    └── testUtils.ts             # Utilitários para testes
+```
+
+---
+
+## 🚀 Passo a Passo para Executar o App
+
+### Pré-requisitos
+
+- Node.js (versão 18 ou superior)
+- npm ou yarn
+- Expo CLI
+- Emulador Android/iOS ou dispositivo físico com Expo Go
+
+### Instalação
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/watusalen/todo-list-test.git
+   cd todo-list-test
+   ```
+
+2. **Instale as dependências:**
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. **Execute o projeto:**
    ```bash
-   npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+4. **Abra o app:**
+   - **Android:** Pressione `a` no terminal ou escaneie o QR Code com o Expo Go
+   - **iOS:** Pressione `i` no terminal ou escaneie o QR Code com a câmera
+   - **Web:** Pressione `w` no terminal
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Comandos Disponíveis
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+| Comando | Descrição |
+|---------|-----------|
+| `npm start` | Inicia o servidor de desenvolvimento Expo |
+| `npm run android` | Inicia no emulador Android |
+| `npm run ios` | Inicia no simulador iOS |
+| `npm run web` | Inicia no navegador web |
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## 🧪 Passo a Passo para Executar os Testes
+
+### Executar Todos os Testes
 
 ```bash
-npm run reset-project
+npm test
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Executar Testes com Cobertura Detalhada
 
-## Learn more
+```bash
+npm test -- --verbose
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### Executar Testes de um Arquivo Específico
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+# Testes do Repository
+npm test -- --testPathPattern="LocalTaskRepository"
 
-## Join the community
+# Testes do Service
+npm test -- --testPathPattern="TaskService"
 
-Join our community of developers creating universal apps.
+# Testes dos ViewModels
+npm test -- --testPathPattern="useTasks|useTaskCreate|useTaskDetail"
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Visualizar Relatório de Cobertura
+
+Após executar os testes, o relatório de cobertura é gerado automaticamente na pasta `coverage/`. Para visualizar:
+
+```bash
+# Abra o relatório HTML no navegador
+open coverage/lcov-report/index.html
+```
+
+### Resultado Esperado
+
+```
+Test Suites: 6 passed, 6 total
+Tests:       95 passed, 95 total
+
+Cobertura:
+- LocalTaskRepository.ts: 100%
+- TaskService.ts: 100%
+- ViewModels: ~88%
+```
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+todo-list-test/
+├── src/
+│   ├── App.tsx                  # Componente principal
+│   ├── model/                   # Camada Model (MVVM)
+│   ├── view/                    # Camada View (MVVM)
+│   └── viewmodel/               # Camada ViewModel (MVVM)
+├── tests/                       # Testes automatizados
+├── coverage/                    # Relatórios de cobertura
+├── package.json                 # Dependências do projeto
+├── jest.config.ts               # Configuração do Jest
+└── tsconfig.json                # Configuração do TypeScript
+```
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- **React Native** - Framework mobile
+- **Expo** - Plataforma de desenvolvimento
+- **TypeScript** - Tipagem estática
+- **Jest** - Framework de testes
+- **React Native Testing Library** - Testes de componentes
+- **React Navigation** - Navegação entre telas
+
+---
+
+## 📄 Licença
+
+Este projeto foi desenvolvido para fins acadêmicos na disciplina de Engenharia de Software 3.
