@@ -168,8 +168,8 @@ export default function TaskDetailScreen({ route, navigation }: TaskDetailScreen
   const spinnerColor = isEditing
     ? theme.colors.primary
     : task.completed
-    ? theme.colors.success
-    : theme.colors.primary;
+    ? theme.colors.warning
+    : theme.colors.success;
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -180,7 +180,7 @@ export default function TaskDetailScreen({ route, navigation }: TaskDetailScreen
               <Ionicons
                 name={task.completed ? 'checkmark-circle' : 'ellipse-outline'}
                 size={18}
-                color={task.completed ? theme.colors.success : theme.colors.primary}
+                color={task.completed ? theme.colors.success : theme.colors.warning}
               />
               <Text style={[styles.statusLabel, task.completed && styles.statusLabelCompleted]}>
                 {task.completed ? 'Concluída' : 'Pendente'}
@@ -232,14 +232,22 @@ export default function TaskDetailScreen({ route, navigation }: TaskDetailScreen
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.primaryButton, task.completed && !isEditing && styles.primaryButtonCompleted]}
+          style={[
+            styles.primaryButton,
+            !isEditing && (task.completed ? styles.primaryButtonWarning : styles.primaryButtonSuccess),
+          ]}
           onPress={isEditing ? handleSave : handleToggleComplete}
           disabled={busy}
         >
           {busy ? (
             <ActivityIndicator color={spinnerColor} />
           ) : (
-            <Text style={[styles.buttonLabel, task.completed && !isEditing && styles.buttonLabelCompleted]}>
+            <Text
+              style={[
+                styles.buttonLabel,
+                !isEditing && (task.completed ? styles.buttonLabelWarning : styles.buttonLabelSuccess),
+              ]}
+            >
               {primaryActionLabel}
             </Text>
           )}
@@ -288,10 +296,10 @@ function createStyles(theme: AppTheme) {
     },
     badgePending: {
       borderBottomWidth: 2,
-      borderColor: theme.colors.primary,
+      borderColor: theme.colors.warning,
     },
     statusLabel: {
-      color: theme.colors.primary,
+      color: theme.colors.warning,
       fontWeight: '600',
     },
     statusLabelCompleted: {
@@ -374,16 +382,22 @@ function createStyles(theme: AppTheme) {
       alignItems: 'center',
       backgroundColor: 'transparent',
     },
-    primaryButtonCompleted: {
+    primaryButtonSuccess: {
       borderColor: theme.colors.success,
+    },
+    primaryButtonWarning: {
+      borderColor: theme.colors.warning,
     },
     buttonLabel: {
       color: theme.colors.primary,
       fontSize: 16,
       fontWeight: '700',
     },
-    buttonLabelCompleted: {
+    buttonLabelSuccess: {
       color: theme.colors.success,
+    },
+    buttonLabelWarning: {
+      color: theme.colors.warning,
     },
     centerContent: {
       flex: 1,
